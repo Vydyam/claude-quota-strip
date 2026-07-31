@@ -1,0 +1,26 @@
+{
+  "name": "claude-token-tracker",
+  "version": "0.1.0",
+  "description": "Browser extension to track Claude token usage in real-time",
+  "scripts": {
+    "dev": "webpack --watch --mode development",
+    "build": "webpack --mode production",
+    "test": "jest",
+    "lint": "eslint src/ extension/"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^14.0.0",
+    "eslint": "^10.8.0",
+    "jest": "^25.0.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "keywords": [
+    "claude",
+    "anthropic",
+    "token",
+    "tracker",
+    "browser-extension"
+  ],
+  "license": "MIT"
+}
