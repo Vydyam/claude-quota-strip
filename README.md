@@ -9,7 +9,8 @@ A lightweight browser extension that tracks your Claude usage in real-time — s
 ## What it looks like
 
 The extension injects a persistent toolbar above the claude.ai message input:
-⚡ | SESSION 60% ——— resets 2h 4m | WEEKLY 6% ——— resets 4d | 17 turns ⭐ Star | 🐛 Bug
+
+<img width="740" height="36" alt="image" src="https://github.com/user-attachments/assets/8b791f19-15da-414f-bd2a-e60de0ad04c9" />
 
 And a popup when you click the extension icon showing per-session breakdowns with progress bars and reset timers.
 
