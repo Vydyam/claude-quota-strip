@@ -3,8 +3,9 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    'background/service-worker': './src/tracker.js',
+    'background/service-worker': './extension/background/service-worker.js',
     'content/content-script': './extension/content/content-script.js',
+    'content/injector': './extension/content/injector.js',
     'popup/popup': './extension/popup/popup.js',
     'panel/panel': './extension/panel/panel.js',
   },

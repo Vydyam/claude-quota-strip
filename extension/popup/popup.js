@@ -1,19 +1,19 @@
-// extension/popup/popup.js
-
-function formatNumber(n) {
-  if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
-  return n.toString();
+function formatResetTime(unixOrISO) {
+  if (!unixOrISO) return '—';
+  const ms = typeof unixOrISO === 'number' ? unixOrISO * 1000 : new Date(unixOrISO).getTime();
+  const diff = ms - Date.now();
+  if (diff <= 0) return 'resetting...';
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  if (h > 24) return `${Math.floor(h/24)}d`;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
 }
 
-function formatCost(usd) {
-  return usd < 0.01 ? `$${usd.toFixed(4)}` : `$${usd.toFixed(3)}`;
-}
-
-function timeAgo(ts) {
-  const diff = Math.floor((Date.now() - ts) / 1000);
-  if (diff < 60) return `${diff}s ago`;
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  return `${Math.floor(diff / 3600)}h ago`;
+function pctColor(pct) {
+  if (pct >= 80) return '#ef4444';
+  if (pct >= 50) return '#f97316';
+  return '#22c55e';
 }
 
 function renderSessions(sessions) {
@@ -26,50 +26,51 @@ function renderSessions(sessions) {
   if (entries.length === 0) {
     noData.style.display = 'block';
     list.innerHTML = '';
-    totalCostEl.textContent = 'Total: $0.0000';
+    totalCostEl.textContent = '';
     return;
   }
 
   noData.style.display = 'none';
 
-  const totalCost = entries.reduce((sum, s) => sum + (s.estimatedCostUSD || 0), 0);
-  totalCostEl.textContent = `Total: ${formatCost(totalCost)}`;
+  // Show latest session's usage in footer
+  const latest = entries[0];
+  totalCostEl.textContent = `Session: ${latest.sessionPercent ?? '—'}% · Weekly: ${latest.weeklyPercent ?? '—'}%`;
 
   list.innerHTML = entries.map(s => `
     <div class="session-card">
       <div class="session-id">
-        Session: ${s.id.slice(0, 8)}…
-        <span style="float:right; color:#333">${timeAgo(s.lastUpdated)}</span>
+        ${s.id.slice(0, 8)}…
+        <span style="float:right;color:#333">${s.model || ''}</span>
       </div>
       <div class="metrics">
-        <div class="metric highlight">
-          <div class="label">Input Tokens</div>
-          <div class="value">${formatNumber(s.totalInputTokens)}</div>
+        <div class="metric" style="border-color:${pctColor(s.sessionPercent||0)}22">
+          <div class="label">Session Used</div>
+          <div class="value" style="color:${pctColor(s.sessionPercent||0)}">
+            ${s.sessionPercent ?? '—'}%
+          </div>
+          <div style="font-size:10px;color:#444;margin-top:2px">
+            resets in ${formatResetTime(s.sessionResetsAt)}
+          </div>
         </div>
         <div class="metric">
-          <div class="label">Output Tokens</div>
-          <div class="value">${formatNumber(s.totalOutputTokens)}</div>
-        </div>
-        <div class="metric">
-          <div class="label">Total Tokens</div>
-          <div class="value">${formatNumber(s.totalInputTokens + s.totalOutputTokens)}</div>
-        </div>
-        <div class="metric cost">
-          <div class="label">Est. Cost</div>
-          <div class="value">${formatCost(s.estimatedCostUSD || 0)}</div>
+          <div class="label">Weekly Used</div>
+          <div class="value" style="color:${pctColor(s.weeklyPercent||0)}">
+            ${s.weeklyPercent ?? '—'}%
+          </div>
+          <div style="font-size:10px;color:#444;margin-top:2px">
+            resets in ${formatResetTime(s.weeklyResetsAt)}
+          </div>
         </div>
       </div>
-      <span class="turns-badge">${s.turns} turn${s.turns !== 1 ? 's' : ''} · ${s.model}</span>
+      <span class="turns-badge">${s.turns} turn${s.turns !== 1 ? 's' : ''}</span>
     </div>
   `).join('');
 }
 
-// Load sessions on open
 chrome.runtime.sendMessage({ type: 'GET_SESSIONS' }, (sessions) => {
   renderSessions(sessions || {});
 });
 
-// Live updates while popup is open
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === 'SESSION_UPDATED') {
     chrome.runtime.sendMessage({ type: 'GET_SESSIONS' }, (sessions) => {
@@ -78,9 +79,6 @@ chrome.runtime.onMessage.addListener((msg) => {
   }
 });
 
-// Clear button
 document.getElementById('btn-clear').addEventListener('click', () => {
-  chrome.runtime.sendMessage({ type: 'CLEAR_SESSIONS' }, () => {
-    renderSessions({});
-  });
+  chrome.runtime.sendMessage({ type: 'CLEAR_SESSIONS' }, () => renderSessions({}));
 });
