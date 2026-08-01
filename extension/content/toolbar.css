@@ -1,168 +1,107 @@
-/* ── Base toolbar ── */
 #ctt-toolbar {
   width: 100%;
-  height: 30px;
+  height: 32px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  gap: 16px;
+  padding: 0 12px;
+  gap: 10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   font-size: 11px;
   z-index: 999;
-
-  /* Dark theme defaults */
   background: #0f0f0f;
-  border-top: 1px solid #1e1e1e;
-  border-bottom: 1px solid #1e1e1e;
+  border: 1px solid #1e1e1e;
+  border-radius: 0 0 12px 12px;
   color: #888;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-#ctt-toolbar .ctt-logo { font-size: 12px; }
+#ctt-toolbar .ctt-logo { font-size: 12px; flex-shrink: 0; }
 
 #ctt-toolbar .ctt-divider {
   width: 1px;
   height: 14px;
-  background: #333;
+  background: #444;
+  flex-shrink: 0;
 }
 
 #ctt-toolbar .ctt-pill {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
+  flex-shrink: 0;
 }
 
 #ctt-toolbar .ctt-label {
-  color: #666;
+  color: #999;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 10px;
+  flex-shrink: 0;
 }
 
 #ctt-toolbar .ctt-value {
   font-weight: 700;
   font-size: 12px;
+  flex-shrink: 0;
 }
 
 #ctt-toolbar .ctt-reset {
-  color: #555;
-  font-size: 10px;
+  color: #777;
+  font-size: 11px;
+  flex-shrink: 0;
 }
 
+/* Progress bar — more visible */
 #ctt-toolbar .ctt-track {
-  width: 48px;
-  height: 3px;
-  background: #2a2a2a;
-  border-radius: 2px;
+  width: 80px;
+  height: 6px;
+  background: #111;
+  border-radius: 3px;
   overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid #555;
 }
 
 #ctt-toolbar .ctt-fill {
   height: 100%;
-  border-radius: 2px;
+  border-radius: 3px;
   transition: width 0.4s ease;
+  min-width: 3px;
+  display: block;
 }
 
-#ctt-toolbar .ctt-spacer { flex: 1; }
+#ctt-toolbar .ctt-spacer { 
+  flex: 1; 
+}
 
-#ctt-toolbar .ctt-model {
+#ctt-toolbar .ctt-turns {
   font-size: 10px;
-  color: #555;
-  font-family: monospace;
+  color: #888;
+  flex-shrink: 0;
 }
 
-#ctt-toolbar .ctt-turns { font-size: 10px; color: #666; }
-
-/* ── Light theme via system preference ── */
-@media (prefers-color-scheme: light) {
-  #ctt-toolbar {
-    background: #f5f5f5;
-    border-top: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-    color: #555;
-  }
-  #ctt-toolbar .ctt-divider { background: #ddd; }
-  #ctt-toolbar .ctt-label { color: #888; }
-  #ctt-toolbar .ctt-reset { color: #999; }
-  #ctt-toolbar .ctt-track { background: #e0e0e0; }
-  #ctt-toolbar .ctt-model { color: #999; }
-  #ctt-toolbar .ctt-turns { color: #888; }
-}
-
-/* ── Light theme via claude.ai's html class ── */
-html.light #ctt-toolbar,
-html[data-theme="light"] #ctt-toolbar,
-html[class*="light"] #ctt-toolbar {
-  background: #f5f5f5;
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  color: #555;
-}
-html.light #ctt-toolbar .ctt-divider,
-html[data-theme="light"] #ctt-toolbar .ctt-divider,
-html[class*="light"] #ctt-toolbar .ctt-divider { background: #ddd; }
-
-html.light #ctt-toolbar .ctt-label,
-html[data-theme="light"] #ctt-toolbar .ctt-label,
-html[class*="light"] #ctt-toolbar .ctt-label { color: #888; }
-
-html.light #ctt-toolbar .ctt-reset,
-html[data-theme="light"] #ctt-toolbar .ctt-reset,
-html[class*="light"] #ctt-toolbar .ctt-reset { color: #999; }
-
-html.light #ctt-toolbar .ctt-track,
-html[data-theme="light"] #ctt-toolbar .ctt-track,
-html[class*="light"] #ctt-toolbar .ctt-track { background: #e0e0e0; }
-
-html.light #ctt-toolbar .ctt-model,
-html[data-theme="light"] #ctt-toolbar .ctt-model,
-html[class*="light"] #ctt-toolbar .ctt-model { color: #999; }
-
-html.light #ctt-toolbar .ctt-turns,
-html[data-theme="light"] #ctt-toolbar .ctt-turns,
-html[class*="light"] #ctt-toolbar .ctt-turns { color: #888; }
-
-/* ── data-theme attribute (set by our JS) ── */
-#ctt-toolbar[data-theme="light"] {
-  background: #f5f5f5;
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  color: #555;
-}
-#ctt-toolbar[data-theme="light"] .ctt-divider { background: #ddd; }
-#ctt-toolbar[data-theme="light"] .ctt-label { color: #888; }
-#ctt-toolbar[data-theme="light"] .ctt-reset { color: #999; }
-#ctt-toolbar[data-theme="light"] .ctt-track { background: #e0e0e0; }
-#ctt-toolbar[data-theme="light"] .ctt-model { color: #999; }
-#ctt-toolbar[data-theme="light"] .ctt-turns { color: #888; }
-
-/* ── CTA buttons ── */
+/* CTA buttons */
 #ctt-toolbar .ctt-btn {
   display: inline-flex;
   align-items: center;
   gap: 3px;
   font-size: 10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-  padding: 3px 8px;
+  padding: 3px 7px;
   border-radius: 4px;
   text-decoration: none;
-  border: 1px solid #2a2a2a;
+  border: 1px solid #333;
   transition: all 0.15s;
   white-space: nowrap;
-}
-
-#ctt-toolbar .ctt-btn-star {
+  flex-shrink: 0;
   color: #888;
-  background: #161616;
+  background: #1a1a1a;
 }
 #ctt-toolbar .ctt-btn-star:hover {
   color: #f5c518;
   border-color: #f5c518;
   background: #1a1800;
-}
-
-#ctt-toolbar .ctt-btn-bug {
-  color: #888;
-  background: #161616;
 }
 #ctt-toolbar .ctt-btn-bug:hover {
   color: #f97316;
@@ -170,19 +109,31 @@ html[class*="light"] #ctt-toolbar .ctt-turns { color: #888; }
   background: #1a0f00;
 }
 
-/* Light theme overrides for buttons */
-#ctt-toolbar[data-theme="light"] .ctt-btn {
-  border-color: #ddd;
-  background: #efefef;
-  color: #666;
+/* Light theme */
+@media (prefers-color-scheme: light) {
+  #ctt-toolbar {
+    background: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    color: #555;
+  }
+  #ctt-toolbar .ctt-divider { background: #ccc; }
+  #ctt-toolbar .ctt-label { color: #777; }
+  #ctt-toolbar .ctt-reset { color: #888; }
+  #ctt-toolbar .ctt-track { background: #ddd; border-color: #ccc; }
+  #ctt-toolbar .ctt-turns { color: #777; }
+  #ctt-toolbar .ctt-btn { border-color: #ddd; background: #ececec; color: #555; }
 }
-#ctt-toolbar[data-theme="light"] .ctt-btn-star:hover {
-  color: #b8860b;
-  border-color: #b8860b;
-  background: #fffbea;
+
+#ctt-toolbar[data-theme="light"] {
+  background: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  color: #555;
 }
-#ctt-toolbar[data-theme="light"] .ctt-btn-bug:hover {
-  color: #c2410c;
-  border-color: #c2410c;
-  background: #fff7ed;
-}
+#ctt-toolbar[data-theme="light"] .ctt-divider { background: #ccc; }
+#ctt-toolbar[data-theme="light"] .ctt-label { color: #777; }
+#ctt-toolbar[data-theme="light"] .ctt-reset { color: #888; }
+#ctt-toolbar[data-theme="light"] .ctt-track { background: #ddd; border-color: #ccc; }
+#ctt-toolbar[data-theme="light"] .ctt-turns { color: #777; }
+#ctt-toolbar[data-theme="light"] .ctt-btn { border-color: #ddd; background: #ececec; color: #555; }

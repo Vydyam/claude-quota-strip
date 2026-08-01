@@ -15,7 +15,7 @@ function formatReset(unixOrISO) {
     ? unixOrISO * 1000
     : new Date(unixOrISO).getTime();
   const diff = ms - Date.now();
-  if (diff <= 0) return 'resetting…';
+  if (diff <= 0) return 'now';
   const h = Math.floor(diff / 3600000);
   const m = Math.floor((diff % 3600000) / 60000);
   const d = Math.floor(h / 24);
@@ -82,6 +82,11 @@ function injectToolbar() {
     return false;
   }
 
+  // Remove grandparent's top padding that creates the gap
+  fieldset.parentElement.style.paddingTop = '0';
+  fieldset.parentElement.style.gap = '0';
+  fieldset.parentElement.parentElement.style.paddingTop = '0';
+
   const wrapper = document.createElement('div');
   wrapper.innerHTML = buildToolbarHTML();
   const toolbar = wrapper.firstElementChild;
@@ -130,6 +135,7 @@ window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e
 function updateToolbar(session) {
   const sp = session.sessionPercent ?? 0;
   const wp = session.weeklyPercent ?? 0;
+  console.log('[CTT] updateToolbar:', sp, wp, pctColor(sp), pctColor(wp));
   const el = (id) => document.getElementById(id);
   if (!el('ctt-session-val')) return;
 
@@ -138,14 +144,14 @@ function updateToolbar(session) {
   el('ctt-session-bar').style.width = `${Math.min(sp, 100)}%`;
   el('ctt-session-bar').style.background = pctColor(sp);
   el('ctt-session-reset').textContent = formatReset(session.sessionResetsAt)
-    ? `· resets ${formatReset(session.sessionResetsAt)}` : '';
+    ? `${formatReset(session.sessionResetsAt)}` : '';
 
   el('ctt-weekly-val').textContent = `${wp}%`;
   el('ctt-weekly-val').style.color = pctColor(wp);
   el('ctt-weekly-bar').style.width = `${Math.min(wp, 100)}%`;
   el('ctt-weekly-bar').style.background = pctColor(wp);
   el('ctt-weekly-reset').textContent = formatReset(session.weeklyResetsAt)
-    ? `· resets ${formatReset(session.weeklyResetsAt)}` : '';
+    ? `${formatReset(session.weeklyResetsAt)}` : '';
 
   el('ctt-turns').textContent = `${session.turns} turn${session.turns !== 1 ? 's' : ''}`;
   //el('ctt-model').textContent = session.model || '—';
