@@ -21,6 +21,7 @@ module.exports = {
         { from: 'extension/popup/popup.html', to: 'popup/popup.html' },
         { from: 'extension/popup/popup.css', to: 'popup/popup.css' },
         { from: 'extension/panel/panel.html', to: 'panel/panel.html' },
+        { from: 'extension/content/toolbar.css', to: 'content/toolbar.css' },
         { from: 'extension/icons', to: 'icons', noErrorOnMissing: true },
       ],
     }),

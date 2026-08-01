@@ -24,7 +24,14 @@
     {
       "matches": ["https://claude.ai/*"],
       "js": ["content/content-script.js"],
-      "run_at": "document_start"
+      "css": ["content/toolbar.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content/toolbar.css", "icons/*"],
+      "matches": ["https://claude.ai/*"]
     }
   ],
   "action": {

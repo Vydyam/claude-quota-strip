@@ -1,0 +1,78 @@
+#ctt-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: #0f0f0f;
+  border-bottom: 1px solid #1e1e1e;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-size: 11px;
+  color: #555;
+}
+
+#ctt-toolbar .ctt-logo {
+  font-size: 12px;
+  margin-right: 2px;
+}
+
+#ctt-toolbar .ctt-divider {
+  width: 1px;
+  height: 14px;
+  background: #222;
+}
+
+#ctt-toolbar .ctt-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#ctt-toolbar .ctt-label {
+  color: #3a3a3a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 10px;
+}
+
+#ctt-toolbar .ctt-value {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+#ctt-toolbar .ctt-reset {
+  color: #2a2a2a;
+  font-size: 10px;
+}
+
+#ctt-toolbar .ctt-track {
+  width: 48px;
+  height: 3px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+#ctt-toolbar .ctt-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+#ctt-toolbar .ctt-spacer { flex: 1; }
+
+#ctt-toolbar .ctt-model {
+  font-size: 10px;
+  color: #2a2a2a;
+  font-family: monospace;
+}
+
+#ctt-toolbar .ctt-turns {
+  font-size: 10px;
+  color: #2a2a2a;
+}

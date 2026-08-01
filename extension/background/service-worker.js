@@ -2,7 +2,8 @@ const STORAGE_KEY = 'ctt_sessions';
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === 'TOKEN_USAGE') {
-    handleUsage(msg.payload);
+    handleUsage(msg.payload, sendResponse);
+    return true;
   }
   if (msg.type === 'GET_SESSIONS') {
     chrome.storage.local.get(STORAGE_KEY, (result) => {
@@ -16,7 +17,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
-function handleUsage(payload) {
+function handleUsage(payload, sendResponse) {
   const { sessionId, model, timestamp, sessionPercent,
           sessionResetsAt, weeklyPercent, weeklyResetsAt } = payload;
 
@@ -36,7 +37,7 @@ function handleUsage(payload) {
     const s = sessions[sessionId];
     s.turns += 1;
     s.lastUpdated = timestamp;
-    s.model = model;
+    s.model = model || s.model;
     s.sessionPercent = sessionPercent;
     s.sessionResetsAt = sessionResetsAt;
     s.weeklyPercent = weeklyPercent;
@@ -44,10 +45,17 @@ function handleUsage(payload) {
     s.history.push({ sessionPercent, weeklyPercent, timestamp });
 
     chrome.storage.local.set({ [STORAGE_KEY]: sessions }, () => {
-      chrome.runtime.sendMessage({
-        type: 'SESSION_UPDATED',
-        session: s
-      }).catch(() => {});
+      // Return session to content script for toolbar update
+      sendResponse(s);
+      // Also notify popup if open
+      chrome.runtime.sendMessage({ type: 'SESSION_UPDATED', session: s }).catch(() => {});
     });
   });
 }
+
+const PRICING = {
+  'claude-opus-4-5':   { input: 15.00, output: 75.00 },
+  'claude-sonnet-4-6': { input: 3.00,  output: 15.00 },
+  'claude-haiku-4-5':  { input: 0.80,  output: 4.00  },
+  'default':           { input: 3.00,  output: 15.00  },
+};
