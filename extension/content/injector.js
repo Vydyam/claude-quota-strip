@@ -44,17 +44,22 @@
                 || (location.pathname.match(/\/chat\/([a-zA-Z0-9\-]+)/) || [])[1]
                 || 'unknown';
 
-              // Dispatch to content-script world via custom event
+              console.log('[CTT] resolved percent:', limit.resolved?.limit?.percent);
+              console.log('[CTT] 5h utilization*100:', Math.round(limit.windows?.['5h']?.utilization * 100));
+              console.log('[CTT] 7d utilization*100:', Math.round(limit.windows?.['7d']?.utilization * 100));
+
               window.dispatchEvent(new CustomEvent('__ctt_usage', {
                 detail: {
                   sessionId,
                   model: window.__ctt_model || 'claude-sonnet-4-6',
                   timestamp: Date.now(),
-                  sessionPercent: limit.windows?.['5h']
-                    ? Math.round(limit.windows['5h'].utilization * 100)
-                    : (limit.resolved?.limit?.percent || 0),
+                  sessionPercent: limit.resolved?.limit?.percent
+                    ?? (limit.windows?.['5h']
+                      ? Math.round(limit.windows['5h'].utilization * 100)
+                      : 0),
                   sessionResetsAt: limit.windows?.['5h']?.resets_at
                     || limit.resolved?.limit?.resets_at,
+                  sessionStatus: limit.windows?.['5h']?.status || 'unknown',
                   weeklyPercent: limit.windows?.['7d']
                     ? Math.round(limit.windows['7d'].utilization * 100)
                     : 0,
