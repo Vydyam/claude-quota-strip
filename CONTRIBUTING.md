@@ -1,12 +1,12 @@
-# Contributing to Claude Token Tracker
+# Contributing to Claude Quota Strip
 
 Thanks for your interest! Here's how to get started.
 
 ## Setup
 
 ```bash
-git clone https://github.com/Vydyam/claude-token-tracker.git
-cd claude-token-tracker
+git clone https://github.com/Vydyam/claude-quota-strip.git
+cd claude-quota-strip
 npm install
 npm run dev   # watch mode
 ```

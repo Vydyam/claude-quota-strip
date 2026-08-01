@@ -1,7 +1,7 @@
 {
-  "name": "claude-token-tracker",
+  "name": "claude-quota-strip",
   "version": "0.1.0",
-  "description": "Browser extension to track Claude token usage in real-time",
+  "description": "Real-time Claude session & weekly quota strip injected above the input boxe",
   "scripts": {
     "dev": "webpack --watch --mode development",
     "build": "webpack --mode production",

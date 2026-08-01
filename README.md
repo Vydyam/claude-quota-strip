@@ -36,8 +36,8 @@ And a popup when you click the extension icon showing per-session breakdowns wit
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/Vydyam/claude-token-tracker.git
-cd claude-token-tracker
+git clone https://github.com/Vydyam/claude-quota-strip.git
+cd claude-quota-strip
 
 # 2. Install dependencies
 npm install
