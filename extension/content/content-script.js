@@ -24,61 +24,101 @@ function formatReset(unixOrISO) {
   return `${m}m`;
 }
 
-function injectToolbar() {
-  if (document.getElementById('ctt-toolbar')) return;
-
-  // Inject CSS
-  const style = document.createElement('link');
-  style.rel = 'stylesheet';
-  style.href = chrome.runtime.getURL('content/toolbar.css');
-  document.head.appendChild(style);
-
-  // Inject toolbar HTML
-  const bar = document.createElement('div');
-  bar.id = 'ctt-toolbar';
-  bar.innerHTML = `
-    <span class="ctt-logo">⚡</span>
-    <span class="ctt-divider"></span>
-
-    <span class="ctt-pill">
-      <span class="ctt-label">Session</span>
-      <span class="ctt-value" id="ctt-session-val" style="color:#333">—</span>
-      <span class="ctt-track">
-        <span class="ctt-fill" id="ctt-session-bar" style="width:0%;background:#333"></span>
+function buildToolbarHTML() {
+  return `
+    <div id="ctt-toolbar">
+      <span class="ctt-logo">⚡</span>
+      <span class="ctt-divider"></span>
+      <span class="ctt-pill">
+        <span class="ctt-label">Session</span>
+        <span class="ctt-value" id="ctt-session-val" style="color:#333">—</span>
+        <span class="ctt-track">
+          <span class="ctt-fill" id="ctt-session-bar" style="width:0%;background:#333"></span>
+        </span>
+        <span class="ctt-reset" id="ctt-session-reset"></span>
       </span>
-      <span class="ctt-reset" id="ctt-session-reset"></span>
-    </span>
-
-    <span class="ctt-divider"></span>
-
-    <span class="ctt-pill">
-      <span class="ctt-label">Weekly</span>
-      <span class="ctt-value" id="ctt-weekly-val" style="color:#333">—</span>
-      <span class="ctt-track">
-        <span class="ctt-fill" id="ctt-weekly-bar" style="width:0%;background:#333"></span>
+      <span class="ctt-divider"></span>
+      <span class="ctt-pill">
+        <span class="ctt-label">Weekly</span>
+        <span class="ctt-value" id="ctt-weekly-val" style="color:#333">—</span>
+        <span class="ctt-track">
+          <span class="ctt-fill" id="ctt-weekly-bar" style="width:0%;background:#333"></span>
+        </span>
+        <span class="ctt-reset" id="ctt-weekly-reset"></span>
       </span>
-      <span class="ctt-reset" id="ctt-weekly-reset"></span>
-    </span>
-
-    <span class="ctt-divider"></span>
-    <span class="ctt-turns" id="ctt-turns">0 turns</span>
-
-    <span class="ctt-spacer"></span>
-    <span class="ctt-model" id="ctt-model">—</span>
+      <span class="ctt-divider"></span>
+      <span class="ctt-turns" id="ctt-turns">0 turns</span>
+      <span class="ctt-spacer"></span>
+      <span class="ctt-model" id="ctt-model">—</span>
+    </div>
   `;
-
-  document.body.prepend(bar);
-
-  // Push claude.ai content down so toolbar doesn't overlap
-  document.body.style.marginTop = '30px';
 }
+
+// Find claude.ai's input container and inject toolbar just above it
+function findInputArea() {
+  const fieldset = document.querySelector('fieldset');
+  if (fieldset) return fieldset;
+  return null;
+}
+
+function injectToolbar() {
+  if (document.getElementById('ctt-toolbar')) return false;
+
+  const fieldset = findInputArea();
+  if (!fieldset) {
+    console.log('[CTT] fieldset not found yet, retrying...');
+    return false;
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = buildToolbarHTML();
+  const toolbar = wrapper.firstElementChild;
+
+  // Insert directly before the fieldset
+  fieldset.parentElement.insertBefore(toolbar, fieldset);
+  console.log('[CTT] Toolbar injected above fieldset');
+  return true;
+}
+
+// Keep trying until the input area appears (claude.ai loads dynamically)
+function tryInjectToolbar() {
+  if (injectToolbar()) return;
+
+  const observer = new MutationObserver(() => {
+    if (injectToolbar()) {
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// Watch for theme changes on <html> element
+const themeObserver = new MutationObserver(() => {
+  const toolbar = document.getElementById('ctt-toolbar');
+  if (!toolbar) return;
+  const isLight = document.documentElement.classList.contains('light')
+    || document.documentElement.getAttribute('data-theme') === 'light'
+    || window.matchMedia('(prefers-color-scheme: light)').matches;
+
+  toolbar.setAttribute('data-theme', isLight ? 'light' : 'dark');
+});
+
+themeObserver.observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ['class', 'data-theme']
+});
+
+// Also listen for system theme changes
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+  const toolbar = document.getElementById('ctt-toolbar');
+  if (toolbar) toolbar.setAttribute('data-theme', e.matches ? 'light' : 'dark');
+});
 
 function updateToolbar(session) {
   const sp = session.sessionPercent ?? 0;
   const wp = session.weeklyPercent ?? 0;
-
   const el = (id) => document.getElementById(id);
-
   if (!el('ctt-session-val')) return;
 
   el('ctt-session-val').textContent = `${sp}%`;
@@ -101,12 +141,15 @@ function updateToolbar(session) {
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 
-// Inject toolbar once DOM is ready
-if (document.body) {
-  injectToolbar();
-} else {
-  document.addEventListener('DOMContentLoaded', injectToolbar);
-}
+tryInjectToolbar();
+
+// Restore toolbar if claude.ai re-renders the DOM
+const reinjector = new MutationObserver(() => {
+  if (!document.getElementById('ctt-toolbar')) {
+    injectToolbar();
+  }
+});
+reinjector.observe(document.body, { childList: true, subtree: true });
 
 // Load last known session on page load
 chrome.runtime.sendMessage({ type: 'GET_SESSIONS' }, (sessions) => {
@@ -119,7 +162,6 @@ chrome.runtime.sendMessage({ type: 'GET_SESSIONS' }, (sessions) => {
 
 window.addEventListener('__ctt_usage', (e) => {
   console.log('[CTT] Usage received from injector:', e.detail);
-
   chrome.runtime.sendMessage({ type: 'TOKEN_USAGE', payload: e.detail }, (session) => {
     if (session) updateToolbar(session);
   });
