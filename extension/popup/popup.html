@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Claude Token Tracker</title>
   <link rel="stylesheet" href="popup.css" />
 </head>
@@ -10,7 +9,7 @@
   <div class="header">
     <span class="logo">⚡</span>
     <span class="title">Claude Token Tracker</span>
-    <button id="btn-clear" title="Clear all sessions">🗑</button>
+    <button id="btn-clear" title="Clear all sessions">Clear</button>
   </div>
 
   <div id="no-data" class="empty-state">
@@ -21,8 +20,8 @@
   <div id="sessions-list"></div>
 
   <div class="footer">
-    <span id="total-cost">Total: $0.0000</span>
-    <a href="https://github.com/Vydyam/claude-token-tracker" target="_blank">GitHub</a>
+    <span class="footer-stat" id="footer-stat">—</span>
+    <a href="https://github.com/Vydyam/claude-token-tracker" target="_blank">GitHub ↗</a>
   </div>
 
   <script src="popup.js"></script>

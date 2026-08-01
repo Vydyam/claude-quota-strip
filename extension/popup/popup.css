@@ -1,9 +1,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  width: 340px;
-  min-height: 120px;
-  background: #0f0f0f;
+  width: 360px;
+  background: #0a0a0a;
   color: #e5e5e5;
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   font-size: 13px;
@@ -14,92 +13,145 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 14px;
-  border-bottom: 1px solid #222;
+  padding: 12px 14px 11px;
+  border-bottom: 1px solid #1c1c1c;
+  background: #0f0f0f;
 }
-.logo { font-size: 16px; }
-.title { flex: 1; font-weight: 600; font-size: 13px; color: #fff; }
+.logo { font-size: 15px; }
+.title {
+  flex: 1;
+  font-weight: 600;
+  font-size: 12px;
+  color: #fff;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
 #btn-clear {
   background: none;
-  border: none;
+  border: 1px solid #222;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-  opacity: 0.5;
-  transition: opacity 0.2s;
+  font-size: 12px;
+  padding: 2px 6px;
+  color: #444;
+  transition: all 0.15s;
 }
-#btn-clear:hover { opacity: 1; }
+#btn-clear:hover { border-color: #444; color: #888; }
 
 /* Empty state */
 .empty-state {
-  padding: 28px 16px;
+  padding: 36px 16px;
   text-align: center;
-  color: #555;
+  color: #333;
 }
-.empty-state .hint { font-size: 11px; margin-top: 6px; color: #3a3a3a; }
+.empty-state p { font-size: 13px; }
+.empty-state .hint {
+  font-size: 11px;
+  margin-top: 6px;
+  color: #2a2a2a;
+}
 
-/* Session cards */
+/* Session card */
 .session-card {
-  padding: 12px 14px;
-  border-bottom: 1px solid #1a1a1a;
-  transition: background 0.15s;
+  padding: 14px;
+  border-bottom: 1px solid #141414;
 }
-.session-card:hover { background: #151515; }
 
+.session-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
 .session-id {
   font-size: 10px;
-  color: #444;
+  color: #3a3a3a;
   font-family: monospace;
-  margin-bottom: 8px;
 }
-
-.metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-
-.metric {
+.session-model {
+  font-size: 10px;
+  color: #2a2a2a;
   background: #161616;
-  border: 1px solid #222;
-  border-radius: 6px;
-  padding: 7px 10px;
+  border: 1px solid #1e1e1e;
+  border-radius: 3px;
+  padding: 2px 6px;
 }
-.metric .label {
+
+/* Progress bars */
+.usage-bars { display: flex; flex-direction: column; gap: 10px; }
+
+.usage-row { display: flex; flex-direction: column; gap: 4px; }
+
+.usage-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.usage-label {
   font-size: 10px;
   color: #555;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 2px;
+  letter-spacing: 0.06em;
 }
-.metric .value {
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
+.usage-value {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
 }
-.metric.highlight .value { color: #f97316; }
-.metric.cost .value { color: #22c55e; }
-
-.turns-badge {
-  display: inline-block;
+.usage-reset {
   font-size: 10px;
-  background: #1e1e1e;
-  border: 1px solid #2a2a2a;
-  border-radius: 4px;
-  padding: 2px 6px;
-  color: #888;
-  margin-top: 8px;
+  color: #333;
 }
+
+.progress-track {
+  height: 4px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.divider {
+  height: 1px;
+  background: #161616;
+  margin: 2px 0;
+}
+
+/* Turns badge */
+.turns-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.badge {
+  font-size: 10px;
+  background: #111;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  padding: 3px 8px;
+  color: #444;
+}
+.badge span { color: #666; }
 
 /* Footer */
 .footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 14px;
-  border-top: 1px solid #1a1a1a;
-  font-size: 11px;
-  color: #444;
+  padding: 9px 14px;
+  border-top: 1px solid #141414;
+  background: #0a0a0a;
 }
-.footer a { color: #555; text-decoration: none; }
-.footer a:hover { color: #888; }
-#total-cost { color: #22c55e; font-weight: 600; }
+.footer-stat { font-size: 11px; color: #333; }
+.footer-stat strong { color: #555; }
+.footer a {
+  font-size: 11px;
+  color: #2a2a2a;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer a:hover { color: #555; }
