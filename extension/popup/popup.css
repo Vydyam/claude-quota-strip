@@ -21,10 +21,10 @@ body {
 .title {
   flex: 1;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   color: #fff;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 #btn-clear {
   background: none;
@@ -65,14 +65,14 @@ body {
 }
 .session-id {
   font-size: 10px;
-  color: #3a3a3a;
+  color: #666;
   font-family: monospace;
 }
 .session-model {
   font-size: 10px;
-  color: #2a2a2a;
-  background: #161616;
-  border: 1px solid #1e1e1e;
+  color: #666;
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
   border-radius: 3px;
   padding: 2px 6px;
 }
@@ -89,7 +89,7 @@ body {
 }
 .usage-label {
   font-size: 10px;
-  color: #555;
+  color: #888;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -100,14 +100,16 @@ body {
 }
 .usage-reset {
   font-size: 10px;
-  color: #333;
+  color: #666;
+  margin-top: 2px;
 }
 
 .progress-track {
-  height: 4px;
+  height: 6px;
   background: #1a1a1a;
-  border-radius: 2px;
+  border-radius: 3px;
   overflow: hidden;
+  border: 1px solid #444;
 }
 .progress-fill {
   height: 100%;
@@ -129,11 +131,11 @@ body {
 }
 .badge {
   font-size: 10px;
-  background: #111;
-  border: 1px solid #1e1e1e;
+  background: #161616;
+  border: 1px solid #2a2a2a;
   border-radius: 4px;
   padding: 3px 8px;
-  color: #444;
+  color: #777;
 }
 .badge span { color: #666; }
 
@@ -146,12 +148,12 @@ body {
   border-top: 1px solid #141414;
   background: #0a0a0a;
 }
-.footer-stat { font-size: 11px; color: #333; }
+.footer-stat { font-size: 11px; color: #666; }
 .footer-stat strong { color: #555; }
 .footer a {
   font-size: 11px;
-  color: #2a2a2a;
+  color: #666;
   text-decoration: none;
   transition: color 0.15s;
 }
-.footer a:hover { color: #555; }
+.footer a:hover { color: #999; }
