@@ -49,7 +49,19 @@ function buildToolbarHTML() {
       <span class="ctt-divider"></span>
       <span class="ctt-turns" id="ctt-turns">0 turns</span>
       <span class="ctt-spacer"></span>
-      <span class="ctt-model" id="ctt-model">—</span>
+      <a class="ctt-btn ctt-btn-star"
+         href="https://github.com/Vydyam/claude-token-tracker"
+         target="_blank"
+         title="Star on GitHub">
+        ⭐ Star
+      </a>
+      <span class="ctt-divider"></span>
+      <a class="ctt-btn ctt-btn-bug"
+         href="https://github.com/Vydyam/claude-token-tracker/issues/new?template=bug_report.md"
+         target="_blank"
+         title="Report a bug">
+        🐛 Bug
+      </a>
     </div>
   `;
 }
@@ -136,7 +148,7 @@ function updateToolbar(session) {
     ? `· resets ${formatReset(session.weeklyResetsAt)}` : '';
 
   el('ctt-turns').textContent = `${session.turns} turn${session.turns !== 1 ? 's' : ''}`;
-  el('ctt-model').textContent = session.model || '—';
+  //el('ctt-model').textContent = session.model || '—';
 }
 
 // ── Init ─────────────────────────────────────────────────────────────────────
