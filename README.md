@@ -71,25 +71,7 @@ npm run lint
 
 ### Project structure
 
-claude-token-tracker/
-├── extension/
-│ ├── manifest.json # Chrome MV3 config
-│ ├── background/
-│ │ └── service-worker.js # Session storage + message hub
-│ ├── content/
-│ │ ├── injector.js # Runs in MAIN world, intercepts fetch
-│ │ ├── content-script.js # Bridges page → extension, manages toolbar
-│ │ └── toolbar.css # Toolbar styles
-│ ├── popup/
-│ │ ├── popup.html
-│ │ ├── popup.js
-│ │ └── popup.css
-│ └── icons/
-├── src/
-│ ├── tracker.js # Token aggregation logic
-│ └── storage.js # chrome.storage helpers
-└── dist/ # Built extension (load this in Chrome)
-
+<img width="533" height="413" alt="image" src="https://github.com/user-attachments/assets/178c8ade-98a7-4e3b-becc-f9f94e177f9c" />
 
 ### How it works
 
