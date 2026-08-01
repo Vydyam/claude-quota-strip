@@ -1,8 +1,8 @@
-# ⚡ Claude Token Tracker
+# ⚡ Claude Quota Strip
 
 A lightweight browser extension that tracks your Claude usage in real-time — session %, weekly %, reset timers, and turn count — injected directly above the claude.ai input box.
 
-![Claude Token Tracker toolbar](https://img.shields.io/badge/version-0.1.0-orange) ![License](https://img.shields.io/badge/license-MIT-green) ![Chrome](https://img.shields.io/badge/Chrome-MV3-blue)
+![Claude Quota Strip toolbar](https://img.shields.io/badge/version-0.1.0-orange) ![License](https://img.shields.io/badge/license-MIT-green) ![Chrome](https://img.shields.io/badge/Chrome-MV3-blue)
 
 ---
 
