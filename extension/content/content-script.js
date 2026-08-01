@@ -50,7 +50,7 @@ function buildToolbarHTML() {
       <span class="ctt-turns" id="ctt-turns">0 turns</span>
       <span class="ctt-spacer"></span>
       <a class="ctt-btn ctt-btn-star"
-         href="https://github.com/Vydyam/claude-token-tracker"
+         href="https://github.com/Vydyam/claude-quota-strip"
          target="_blank"
          title="Star on GitHub">
         ⭐ Star

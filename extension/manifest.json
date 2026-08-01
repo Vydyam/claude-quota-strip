@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Claude Token Tracker",
+  "name": "Claude Quota Strip",
   "version": "0.1.0",
-  "description": "Real-time Claude API token usage tracker per session",
+  "description": "Real-time Claude session & weekly quota strip injected above the input box",
   "permissions": [
     "storage",
     "tabs",
