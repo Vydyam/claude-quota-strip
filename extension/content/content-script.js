@@ -110,6 +110,42 @@ function tryInjectToolbar() {
   observer.observe(document.body, { childList: true, subtree: true });
 }
 
+// Re-load data when URL changes (navigating between conversations)
+let lastPath = window.location.pathname;
+
+const navigationObserver = new MutationObserver(() => {
+  if (window.location.pathname !== lastPath) {
+    lastPath = window.location.pathname;
+    console.log('[CTT] Navigation detected, reloading session data...');
+
+    // Load the session for this conversation
+    const sessionId = lastPath.match(/\/chat\/([a-zA-Z0-9\-]+)/)?.[1];
+
+    chrome.runtime.sendMessage({ type: 'GET_SESSIONS' }, (sessions) => {
+      if (!sessions) return;
+      if (sessionId && sessions[sessionId]) {
+        // Load this specific conversation's data
+        updateToolbar(sessions[sessionId]);
+      } else {
+        // New conversation — reset toolbar to blank state
+        updateToolbar({
+          sessionPercent: null,
+          weeklyPercent: null,
+          sessionResetsAt: null,
+          weeklyResetsAt: null,
+          turns: 0,
+          model: null,
+        });
+      }
+    });
+  }
+});
+
+navigationObserver.observe(document.body, {
+  childList: true,
+  subtree: true
+});
+
 // Watch for theme changes on <html> element
 const themeObserver = new MutationObserver(() => {
   const toolbar = document.getElementById('ctt-toolbar');
