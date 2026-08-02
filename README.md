@@ -1,8 +1,21 @@
 # ⚡ Claude Quota Strip
 
-A lightweight browser extension that tracks your Claude usage in real-time — session %, weekly %, reset timers, and turn count — injected directly above the claude.ai input box.
+> Real-time Claude session & weekly quota tracker — injected as a strip directly above the claude.ai input box.
 
-![Claude Quota Strip toolbar](https://img.shields.io/badge/version-0.1.0-orange) ![License](https://img.shields.io/badge/license-MIT-green) ![Chrome](https://img.shields.io/badge/Chrome-MV3-blue)
+![Version](https://img.shields.io/badge/version-0.1.0-orange)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Chrome](https://img.shields.io/badge/Chrome-MV3-blue)
+![Privacy](https://img.shields.io/badge/data-100%25%20local-brightgreen)
+
+---
+
+## Preview
+
+### Toolbar strip — always visible above your prompt
+![Toolbar](docs/screenshots/toolbar.png)
+
+### Popup — click the ⚡ icon for session breakdown
+![Popup](docs/screenshots/popup.png)
 
 ---
 
@@ -18,57 +31,38 @@ And a popup when you click the extension icon showing per-session breakdowns wit
 
 ## Features
 
-- 📊 **Session usage %** with reset countdown
-- 📅 **Weekly usage %** with reset countdown  
+- 📊 **Session usage %** with progress bar and reset countdown
+- 📅 **Weekly usage %** with progress bar and reset countdown
 - 🔄 **Turn counter** per conversation
+- 🔀 **Conversation-aware** — updates when you switch chats
 - 🌗 **Dark / light theme** auto-detection
-- 📌 **Persistent toolbar** injected above the input box
-- 🔒 **100% local** — no data leaves your browser
+- ⭐ **Star** and 🐛 **Bug report** shortcuts in the strip
+- 🔒 **100% local** — no data ever leaves your browser
+- ✅ **Accurate** — reads directly from claude.ai's own API response
 
 ---
 
-## Install from source (free)
+## Install from source (free, 3 steps)
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) v18+
 - Google Chrome
 
-### Steps
-
 ```bash
-# 1. Clone the repo
+# 1. Clone
 git clone https://github.com/Vydyam/claude-quota-strip.git
 cd claude-quota-strip
 
-# 2. Install dependencies
-npm install
+# 2. Build
+npm install && npm run build
 
-# 3. Build the extension
-npm run build
+# 3. Load in Chrome
+# Go to chrome://extensions → Enable Developer mode → Load unpacked → select dist/
 ```
 
-Then load into Chrome:
-
-1. Open `chrome://extensions`
-2. Enable **Developer mode** (top right toggle)
-3. Click **Load unpacked**
-4. Select the `dist/` folder inside the project
-5. Visit [claude.ai](https://claude.ai) and start chatting
+Then visit [claude.ai](https://claude.ai) — the strip appears automatically above the input box.
 
 ---
-
-## Development
-
-```bash
-# Watch mode — rebuilds on every file save
-npm run dev
-
-# Production build
-npm run build
-
-# Lint
-npm run lint
-```
 
 ### Project structure
 
@@ -76,27 +70,57 @@ npm run lint
 
 ### How it works
 
-1. `injector.js` runs in the **MAIN world** and overrides `window.fetch` before claude.ai loads
-2. It intercepts the SSE stream from `/api/organizations/.../completion`
-3. The `message_limit` event in the stream contains session and weekly utilization data
-4. Data is dispatched via a custom DOM event to `content-script.js`
-5. The content script forwards it to the service worker for storage
-6. The toolbar and popup update in real-time
+claude.ai page loads
+↓
+injector.js (MAIN world) overrides window.fetch
+↓
+Intercepts SSE stream from /api/organizations/.../completion
+↓
+Captures message_limit event → session %, weekly %, reset times
+↓
+Dispatches custom DOM event → content-script.js
+↓
+Updates toolbar strip + stores session in chrome.storage.local
+↓
+Popup reads from storage on click
+
+---
+
+## Development
+
+```bash
+npm run dev      # Watch mode — rebuilds on save
+npm run build    # Production build
+npm run lint     # Lint
+```
 
 ---
 
 ## Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Good first issues:
-- [ ] Firefox support
+### Good first issues
+- [ ] Firefox support (`browser.*` API + sidebar_action)
+- [ ] Configurable toolbar position (top / above input / floating)
+- [ ] Settings panel — show/hide individual metrics
+- [ ] Collapse/dismiss strip with timer (4h / 8h / 12h)
 - [ ] Export session history as CSV
-- [ ] Configurable toolbar position
-- [ ] Notifications when approaching limits
+- [ ] Notifications when approaching 80% / 90% limits
+
+---
+
+## Privacy
+
+All data stays in your browser. No analytics, no telemetry, no external requests.  
+Read the full [Privacy Policy](https://vydyam.github.io/claude-quota-strip/privacy-policy).
 
 ---
 
 ## License
 
 MIT © [Vydyam](https://github.com/Vydyam)
+
+---
+
+*Built in one session as an open source project. Star ⭐ if it's useful!*
