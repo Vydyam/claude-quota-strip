@@ -12,7 +12,7 @@
 ## Preview
 
 ### Toolbar strip — always visible above your prompt
-![Toolbar](docs/screenshots/toolbar.png)
+![Browser](docs/screenshots/browser-fullscreen.png)
 
 ### Popup — click the ⚡ icon for session breakdown
 ![Popup](docs/screenshots/popup.png)
@@ -23,7 +23,7 @@
 
 The extension injects a persistent toolbar above the claude.ai message input:
 
-<img width="740" height="36" alt="image" src="https://github.com/user-attachments/assets/8b791f19-15da-414f-bd2a-e60de0ad04c9" />
+![Toolbar](docs/screenshots/toolbar.png)
 
 And a popup when you click the extension icon showing per-session breakdowns with progress bars and reset timers.
 
